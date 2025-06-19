@@ -1,0 +1,15 @@
+# paths
+artifacts_path: ../output/artifacts/model.pt
+log_path: ../output/artifacts/logs/logs.csv
+raw_data_path: ../input/raw
+processed_data_path: ../input/processed
+output_path: ../output
+
+# Hyperparams
+validation_percent: 0.3
+epochs: 1
+batch_size: 416
+num_workers: 4
+early_stopping_patience: 10
+learning_rate: 0.001
+weight_decay: 0.0001

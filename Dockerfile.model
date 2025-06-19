@@ -1,0 +1,15 @@
+# Use this file to build and push the image containing the trained model to dockerhub
+# Start from your existing image
+FROM kyghelani2/bert_lstm_news_classifier:latest
+
+# Copy trained outputs into the image
+COPY output/ /app/output/
+
+# Set working directory
+WORKDIR /app/src
+
+# Default command (adjust for inference if needed)
+# CMD ["python3.10", "main.py", "--mode", "inference"]
+
+
+
