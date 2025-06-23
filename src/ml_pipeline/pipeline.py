@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import torch
 from torch.utils.data import DataLoader
+from torch.amp import GradScaler
 from tqdm import tqdm
 # 
 from ml_pipeline.dataset import NewsDataset
@@ -89,8 +90,9 @@ class MLPipeline:
         
         # Optimizer:
         import torch.nn as nn
-        optimizer = torch.optim.Adam(self.model.parameters(), lr=CONFIG.get('learning_rate', 0.001))
+        optimizer = torch.optim.Adam(self.model.parameters(), lr=CONFIG.get('learning_rate', CONFIG.get('weight')))
         criterion = nn.CrossEntropyLoss()
+        scaler = GradScaler(device=DEVICE)
         
         
         trigger = 0
@@ -105,7 +107,8 @@ class MLPipeline:
                 train_loader=train_loader,
                 model=self.model,
                 criterion=criterion,
-                optimizer=optimizer
+                optimizer=optimizer,
+                scaler=scaler
             )
             
             #* VALIDATE [@ every 5 epochs]

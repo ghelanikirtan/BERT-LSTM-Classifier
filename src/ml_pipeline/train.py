@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.amp import autocast
+from torch.amp import autocast, GradScaler
 from tqdm import tqdm
 from collections import OrderedDict
 # 
@@ -14,7 +14,8 @@ def train(
     train_loader: torch.utils.data.DataLoader,
     model: BERTLSTMClassifier,
     criterion: nn.CrossEntropyLoss,
-    optimizer: optim.Adam) -> OrderedDict:
+    optimizer: optim.Adam,
+    scaler: GradScaler) -> OrderedDict:
     """ Training pipeline:
     """
     
@@ -33,12 +34,15 @@ def train(
         with autocast(device_type=DEVICE_STR):
             outputs = model(input_ids, attention_mask)
             loss = criterion(outputs, labels)
-        
-        loss.backward()
-        optimizer.step()
+
+        scaler.scale(loss).backward()
+        scaler.step(optimizer)
+        scaler.update()
+        # loss.backward()
+        # optimizer.step()
         
         # update the loss
-        loss_meter.update(loss.item(), input_ids.size(0))
+        loss_meter.update(loss.item() if isinstance(loss,torch.Tensor) else loss, input_ids.size(0))
         
         # Progress bar:
         postfix = OrderedDict([

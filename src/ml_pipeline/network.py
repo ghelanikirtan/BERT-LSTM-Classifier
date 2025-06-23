@@ -1,3 +1,4 @@
+from turtle import forward
 import torch
 import torch.nn as nn
 
@@ -35,5 +36,4 @@ class BERTLSTMClassifier(nn.Module):
         logits = self.fc_layer(out)
         
         return logits
-        
         

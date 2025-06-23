@@ -11,6 +11,7 @@ services:
               capabilities: [gpu]
   ml_pipeline:
     image: kyghelani2/bert_lstm_news_classifier:latest
+    # build: .
     deploy:
       resources:
         reservations:
@@ -24,3 +25,5 @@ services:
       - ./output:/app/output
     environment:
       - CUDA_VISIBLE_DEVICES=0
+    depends_on:
+      - gpu_service
