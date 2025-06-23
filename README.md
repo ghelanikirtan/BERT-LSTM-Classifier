@@ -15,3 +15,7 @@
 
 - ETL Pipeline [Simple RAW Text Transformation & Noise cleaning]
 - ML Pipeline [Model Build & Train Pipeline]
+
+### 1<sup>st</sup> Epoch Result:
+
+![alt text](image.png)
